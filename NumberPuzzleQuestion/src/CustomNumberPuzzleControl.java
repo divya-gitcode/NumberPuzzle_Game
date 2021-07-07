@@ -1,4 +1,7 @@
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+
 
 class CustomNumberPuzzleControl extends NumberPuzzleControl {
 	public int getWidth() {
@@ -31,32 +34,63 @@ class CustomNumberPuzzleControl extends NumberPuzzleControl {
 
 	// The following three methods have to be written by the participants...
 
-	public int handleButtonClicked(NumberPuzzleGame game){
-		int emptyCellId = game.getEmptyCellId();
-		Button buttonClicked = game.getButtonClicked();
-		Button[] buttons = game.getButtons();
-		
-		//Your logic here		
-		
-		return emptyCellId;
 
-	}
-	public int[] getRandomNumbersForGrid() {
-		int arr[] = new int[15];
-		
-		//Your logic here
-		int a = getRandomNumber();
-		
-		
-		return arr;
-	}
-	public boolean checkForWinner(Button[] buttons)
+public int handleButtonClicked(NumberPuzzleGame game){
+	int emptyCellId = game.getEmptyCellId();
+	Button buttonClicked = game.getButtonClicked();
+	Button[] buttons = game.getButtons();
+	
+	//Your logic here
+	int i=0;
+	for(Button b:buttons)
 	{
-		boolean winner = true;
-		
-		// Your Logic here
-		getIntegerArrayOfButtonIds(buttons);
-
-		return winner;
+		if(b==buttonClicked)
+		{
+			if(emptyCellId==(i+1) || emptyCellId==(i-1) || emptyCellId==(i+4) || emptyCellId==(i-4))
+			{
+				swapButton(buttons[emptyCellId], buttonClicked);
+				emptyCellId=i;
+				break;
+			}
+		}
+		i++;
 	}
+	
+	return emptyCellId;
+
+}
+public int[] getRandomNumbersForGrid() {
+	int arr[] = new int[15];
+	
+	//Your logic here
+//	int a = getRandomNumber();
+	ArrayList<Integer> list = new ArrayList<Integer>();
+	for(int i=1;i<=15;i++)
+	{
+		list.add(i);
+	}
+	Collections.shuffle(list);
+	for(int i=0;i<15;i++)
+	{
+		arr[i]=list.get(i);
+	}
+	return arr;
+}
+public boolean checkForWinner(Button[] buttons)
+{
+	boolean winner = true;
+	
+	// Your Logic here
+	int arr[]=getIntegerArrayOfButtonIds(buttons);
+	for(int i=0;i<arr.length;i++)
+	{
+		if(arr[i+1]!=i)
+		{
+			winner=false;
+			break;
+		}
+	}
+
+	return winner;
+}
 }
